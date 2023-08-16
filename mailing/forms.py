@@ -17,4 +17,4 @@ class StyleFormMixin:
 class MailingForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Mailing
-        exclude = ('status_mail',)
+        exclude = ('status_mail', 'attempt', 'feedback',)
