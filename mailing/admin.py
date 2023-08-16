@@ -10,7 +10,7 @@ class Castomeradmin(admin.ModelAdmin):
 
 @admin.register(Mailing)
 class Mailingadmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'start', 'stop', 'interval',)
+    list_display = ('id', 'name', 'start', 'stop', 'interval', 'datetime')
 
 
 @admin.register(Massage)
