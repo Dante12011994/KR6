@@ -1,9 +1,13 @@
 from django.db import models
 
+#
 NULLABLE = {'blank': True, 'null': True}
 
 
 class Customer(models.Model):
+    """
+    Модель клиента, кому будет отправляться сообщение
+    """
     email = models.CharField(max_length=250, verbose_name='email')
     fio = models.CharField(max_length=150, verbose_name='ФИО')
     comment = models.TextField(verbose_name='коментарий', **NULLABLE)
@@ -17,6 +21,9 @@ class Customer(models.Model):
 
 
 class Massage(models.Model):
+    """
+    Модель сообщения
+    """
     mail_subject = models.CharField(max_length=300, verbose_name='тема письма')
     text = models.TextField(verbose_name='тело письма')
 
@@ -29,6 +36,9 @@ class Massage(models.Model):
 
 
 class Mailing(models.Model):
+    """
+    Модель рассылки
+    """
     INTERVAL = [('day', 'каждый день'), ('week', 'раз в неделю'), ('month', 'раз в месяц')]
     STATUS = [('create', 'создана'), ('start', 'запущена'), ('finished', 'завершена')]
     name = models.CharField(max_length=150, verbose_name='название рассылки')

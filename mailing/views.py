@@ -13,21 +13,27 @@ from mailing.models import Mailing, Massage
 
 def main(request):
     """
-        Переходит на страницу "Главная"
-        """
+    Переходит на страницу "Главная"
+    """
     return render(request, 'mailing/main.html', )
 
 
 class MailingCreateView(CreateView):
+    """
+    Создание рассылки
+    """
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mailing:main')
 
     def form_valid(self, form):
+        """
+        Проверка текущей даты, с датой начала и окончания рассылки.
+        """
         if form.is_valid():
-            time_now = datetime.date.today()
+            day_today = datetime.date.today()
             self.object = form.save()
-            if self.object.start <= time_now < self.object.stop:
+            if self.object.start <= day_today < self.object.stop:
                 self.object.status_mail = 'start'
                 mail = self.object.massage
                 users = self.object.users_group.all()
@@ -38,27 +44,39 @@ class MailingCreateView(CreateView):
                         from_email=settings.EMAIL_HOST_USER,
                         recipient_list=[user.email]
                     )
-                self.object.datatime = time_now
-            elif time_now > self.object.stop:
+                self.object.datatime = day_today
+            elif day_today > self.object.stop:
                 self.object.status_mail = 'finished'
             self.object.save()
             return super().form_valid(form)
 
 
 class MailingListView(ListView):
+    """
+    Отображение всех рассылок
+    """
     model = Mailing
 
 
 class MailingDetailView(DetailView):
+    """
+    Просмотр информации о рассылке
+    """
     model = Mailing
 
 
 class MailingUpdateView(UpdateView):
+    """
+    Изменение параметров рассылки
+    """
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy('mailing:mailing')
 
 
 class MailingDeleteView(DeleteView):
+    """
+    Удаление рассылки
+    """
     model = Mailing
     success_url = reverse_lazy('mailing:mailing')
